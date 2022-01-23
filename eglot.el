@@ -3114,11 +3114,11 @@ If INTERACTIVE, prompt user for details."
 (make-obsolete-variable 'eglot--managed-mode-hook
                         'eglot-managed-mode-hook "1.6")
 
-(if (< emacs-major-version 27)
-    (defun eglot--plist-keys (plist)
-      (cl-loop for (k _v) on plist by #'cddr collect k))
-  ;; Make into an obsolete alias once we drop support for Emacs 26.
-  (defalias 'eglot--plist-keys #'map-keys))
+(defalias 'eglot--plist-keys
+  (if (< emacs-major-version 27)
+      (lambda (plist)
+        (cl-loop for (k _v) on plist by #'cddr collect k))
+    #'map-keys))
 
 (provide 'eglot)
 
